@@ -3,29 +3,29 @@ import random
 import hgDrawings as draw
 import sys
 
-x = json.load(open('german-cities.json'))  #extract the city names from the database
-cityDatabase = x['data']
-cities = []  #here are our cities stored
-for i in cityDatabase:
-    cities.append(i['name'])
+#однобуквенные переменные мы не пишем, это трудно читать, а эффекта никакого - реальный код перед выгрузкой в продакшн будет минифицррован и за-uglify-ен
+cities = json.load(open('german-cities.json'))  #extract the city names from the database
 
-for i in cities:  #fix broken german letters in the database
-    if "Ã¶" in i:
-        fixedWord = i.replace('Ã¶', 'ö')
-        cities.append(fixedWord)
-        cities.remove(i)
-    if "Ã¼" in i:
-        fixedWord = i.replace('Ã¼', 'ü')
-        cities.append(fixedWord)
-        cities.remove(i)
+#очень много лишнего кода. Погугли как итерироваться по листам в питоне. Я бы сделал так
+def getName(city):
+    return city['name']
+citiesNames = list(map(getName, cities['data']))
 
+#у тебя тут нарушается порядок городов - тут может это и не кейс, но обычно порядок не трогаем. Опять же надо гуглить встроенные методы. Я бы снова сделал через map
+def fixName(name):
+    #двойной реплейс looks like bad code, опять же, надо смотреть что питон предлагает, мб можно красиво. Иначе просто через if как у тебя
+    return name.replace('Ã¶', 'ö').replace('Ã¼', 'ü')
+
+fixedCitiesNames = list(map(fixName, citiesNames))
+
+#тут офк все ок, но такие вещи выносятся в отдельный файл обычно, попробуй поучиться как в питоне это выглядит. Будет типа import losingLine from './consts'
 losingLine = ['You are gravely mistaken! Choose another!', 'Oops! One step closer to death!',
               'Another mistake! You can already feel the shivering gaze of the abyss!', 'Wrong!',
               'Incorrect!', 'Bad choice!', 'Unlucky!']
 winningLine = ['And this is correct! Once more!', 'Correct! Pick again!', "You're right! Try again!", "Good job!",
                'Way to go!', 'Phenomenal!']
 
-wordChosen = random.choice(cities)
+wordChosen = random.choice(fixedCitiesNames)
 wordChosen = wordChosen.upper()
 wordLetters = set(wordChosen)
 mistakeCounter = 0
@@ -37,6 +37,7 @@ print("Welcome to Galgenmännchen! This is a Hangman game, but using German citi
 
 input()
 
+#да, разумно и круто
 draw.hangman_lvl(mistakeCounter)
 
 print("The word is:")
@@ -48,6 +49,7 @@ print("Guess one letter!")
 
 while mistakeCounter < 6:
     guess = input().upper()
+    #круто, корнеркейсы с самого начала обрабатываешь, правильно
     if not len(guess) == 1:
         print("You have to type ONE letter! Try again!")
         continue
@@ -59,10 +61,10 @@ while mistakeCounter < 6:
         continue
     if guess not in wordChosen:
         mistakeCounter += 1
-        if mistakeCounter == 6:
-            draw.hangman_lvl(mistakeCounter)
-            break
+        #как будто бесполезный draw, а что если
         draw.hangman_lvl(mistakeCounter)
+        if mistakeCounter == 6:
+            break
         print(random.choice(losingLine))
     if guess in wordChosen:
         print(random.choice(winningLine))
