@@ -3,8 +3,7 @@ import random
 import hgDrawings as draw
 import sys
 
-x = json.load(open('german-cities.json'))  #extract the city names from the database
-cityDatabase = x['data']
+cityDatabase = json.load(open('german-cities.json'))['data']  #extract the city names from the database
 cities = []  #here are our cities stored
 for i in cityDatabase:
     cities.append(i['name'])
