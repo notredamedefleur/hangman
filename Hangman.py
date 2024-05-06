@@ -78,9 +78,4 @@ while mistakeCounter < 6:
         print("Congratulations! You have escaped the cold fingers of death. But for long?")
         sys.exit()
 
-print("You lost. Your body is hanging helplessly on the rope. For mere seconds convulsions "
-      "still pulsate through your body, \neerily jerking your limbs in a weird and uncanny dance. "
-      "But soon even it comes to an end, this last movement of yours. \nYour face is blue, your tongue, swollen "
-      "and thick, sticks out like an undercooked Bratwurst. Had you been \nstill be able of feeling, "
-      "you'd feel a nasty cold trickle of feces down your left thigh. But \nthis is not the case. Alas! Your knowledge "
-      "of German cities was insufficient to save you. \nNow there is nothing. Now you are dead.")
+print("You lost. Alas! Your knowledge of German cities was insufficient to save you. Perhaps you could try again?")
